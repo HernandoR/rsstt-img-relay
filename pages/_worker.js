@@ -15,7 +15,6 @@
  */
 const config = {
     selfURL: "", // to be filled later
-    URLRegExp: "^(\\w+://.+?)/(.*)$",
     // 从 https://sematext.com/ 申请并修改令牌
     sematextToken: "00000000-0000-0000-0000-000000000000",
     // 是否丢弃请求中的 Referer，在目标网站应用防盗链时有用
@@ -65,11 +64,9 @@ async function fetchHandler(request, env, ctx) {
         });
 
     try {
-        const urlMatch = request.url.match(RegExp(config.URLRegExp));
-        config.selfURL = urlMatch[1];
-        let url = urlMatch[2];
-
-        url = decodeURIComponent(url);
+        const selfUrl = new URL(request.url);
+        config.selfURL = selfUrl.origin;
+        let url = selfUrl.searchParams.get('url') || '';
 
         //需要忽略的代理
         if (request.method == "OPTIONS" || url.length < 3 || url.indexOf('.') == -1 || url == "favicon.ico" || url == "robots.txt") {
@@ -77,7 +74,7 @@ async function fetchHandler(request, env, ctx) {
             const invalid = !(request.method == "OPTIONS" || url.length === 0)
             outBody = JSON.stringify({
                 code: invalid ? 400 : 0,
-                usage: 'Host/{URL}',
+                usage: 'Host/?url={URL}',
                 source: 'https://github.com/Rongronggg9/rsstt-img-relay'
             });
             outCt = "application/json";
@@ -249,9 +246,10 @@ const sematext = {
             proxyHost: null,
         }
 
-        if (body.path.includes(".") && body.path != "/" && !body.path.includes("favicon.ico")) {
+        const targetUrl = url.searchParams.get('url') || '';
+        if (targetUrl.includes(".") && !targetUrl.includes("favicon.ico")) {
             try {
-                let purl = fixUrl(decodeURIComponent(body.path.substring(1)));
+                let purl = fixUrl(targetUrl);
 
                 body.path = purl;
                 body.proxyHost = new URL(purl).host;
