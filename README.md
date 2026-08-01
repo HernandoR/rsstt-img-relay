@@ -25,11 +25,26 @@ fetch("https://example.com/?url=" + encodeURIComponent($url)).then(x => x.text()
 
 #### wrangler
 - Clone the project and enter the cors directory
-- Edit `index.js` and `wrangler.toml` (configuration key)
-- `wrangler config` configure mailbox and key
-- `wrangler build` build
-- `wrangler publish` release
-- Detailed documentation: <https://developers.cloudflare.com/workers/quickstart>
+- Edit `index.js` and `wrangler.toml` (configuration keys) if necessary
+- Install Wrangler as a dev dependency (requires Node.js 22+):
+  ```
+  npm install --save-dev wrangler
+  ```
+- Log in to your Cloudflare account (opens your browser):
+  ```
+  npx wrangler login
+  ```
+- Run the Worker locally:
+  ```
+  npx wrangler dev
+  ```
+- Build and deploy to Cloudflare's global network:
+  ```
+  npx wrangler deploy
+  ```
+- Detailed documentation: <https://developers.cloudflare.com/workers/wrangler/commands/>
+
+> Note: `wrangler config` was removed (use `wrangler login` instead), and `wrangler build` + `wrangler publish` are replaced by a single `wrangler deploy`.
 
 #### Cloudflare Dashboard
 - Turn to [Cloudflare Dashboard](https://dash.cloudflare.com), then switch to the `Workers` tab
@@ -64,12 +79,13 @@ The amount can't hold up, please use your account to build the service if you us
 > The mechanism of both methods is the same
 
 #### wrangler
+Requires Node.js 22+.
 ```
-npm install wrangler@beta # install
-npx wrangler pages dev --help # View help (nodejs version >= 16.x)
-npx wrangler pages dev ./ # Enter the pages directory and run
+npm install --save-dev wrangler # install
+npx wrangler pages dev ./ # run the Pages application locally (run inside the pages directory)
+npx wrangler pages deploy ./ --project-name=<PROJECT_NAME> # deploy the pages directory directly
 ```
-Details: <https://developers.cloudflare.com/pages/platform/functions>
+Details: <https://developers.cloudflare.com/pages/functions/local-development/>
 
 #### Cloudflare Dashboard
 - Fork this repository

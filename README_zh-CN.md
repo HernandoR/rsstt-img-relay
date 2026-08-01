@@ -25,11 +25,26 @@ fetch("https://example.com/?url=" + encodeURIComponent($url)).then(x => x.text()
 
 #### wrangler
 - clone 项目，进入 cors 目录
-- 编辑 `index.js` 和 `wrangler.toml` (配置密钥)
-- `wrangler config` 配置邮箱、密钥
-- `wrangler build` 构建
-- `wrangler publish` 发布
-- 详细文档：<https://developers.cloudflare.com/workers/quickstart>
+- 如有需要，编辑 `index.js` 和 `wrangler.toml`（配置密钥）
+- 安装 Wrangler 为开发依赖（需要 Node.js 22+）：
+  ```
+  npm install --save-dev wrangler
+  ```
+- 登录 Cloudflare 账号（会打开浏览器）：
+  ```
+  npx wrangler login
+  ```
+- 本地运行 Worker：
+  ```
+  npx wrangler dev
+  ```
+- 构建并部署到 Cloudflare 全球网络：
+  ```
+  npx wrangler deploy
+  ```
+- 详细文档：<https://developers.cloudflare.com/workers/wrangler/commands/>
+
+> 注意：`wrangler config` 已被移除（改用 `wrangler login`），`wrangler build` + `wrangler publish` 已合并为一条 `wrangler deploy`。
 
 #### Cloudflare 仪表板
 - 转到 [Cloudflare 仪表板](https://dash.cloudflare.com)，然后切换到 `Workers` 标签
@@ -63,12 +78,13 @@ fetch("https://example.com/?url=" + encodeURIComponent($url)).then(x => x.text()
 > 两种方法的工作原理一致
 
 #### wrangler
+需要 Node.js 22+。
 ```
-npm install wrangler@beta # 安装
-npx wrangler pages dev --help # 查看帮助（nodejs version >= 16.x）
-npx wrangler pages dev ./ # 进入 pages 目录运行
+npm install --save-dev wrangler # 安装
+npx wrangler pages dev ./ # 本地运行 Pages 应用（在 pages 目录内运行）
+npx wrangler pages deploy ./ --project-name=<PROJECT_NAME> # 直接部署 pages 目录
 ```
-详细文档：<https://developers.cloudflare.com/pages/platform/functions>
+详细文档：<https://developers.cloudflare.com/pages/functions/local-development/>
 
 #### Cloudflare 仪表板
 - Fork 这个项目
