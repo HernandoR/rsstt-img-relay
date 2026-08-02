@@ -19,6 +19,16 @@ var $url = "http://wthrcdn.etouch.cn/weather_mini?citykey=101040100";
 fetch("https://example.com/?url=" + encodeURIComponent($url)).then(x => x.text()).then(console.log)
 ```
 
+### werss (WeChat full-text RSS)
+
+Turn a WeChat Official Account RSS feed (e.g. the channels in [osnsyc/Wechat-Scholar](https://github.com/osnsyc/Wechat-Scholar)) into a full-text RSS feed. The relay fetches every linked `mp.weixin.qq.com` article and injects the full article HTML as `content:encoded`.
+
+- Feed mode: `https://example.com/werss?url={RSS_FEED_URL}` returns an RSS 2.0 feed with full text
+  - e.g. `https://example.com/werss?url=https://raw.githubusercontent.com/osnsyc/Wechat-Scholar/main/channels/gh_ec27b24114a0.xml`
+- Article mode: `https://example.com/werss?url={mp.weixin.qq.com article URL}` returns the article body as HTML
+
+Configurable via environment variables: `WERSS_MAX_ITEMS` (default `20`, max `50`), `WERSS_CONCURRENCY` (default `5`), `WERSS_CACHE` (default `900` seconds), `WERSS_USER_AGENT`.
+
 ### Deploy
 
 > The mechanism of both methods is the same

@@ -19,6 +19,16 @@ var $url = "http://wthrcdn.etouch.cn/weather_mini?citykey=101040100";
 fetch("https://example.com/?url=" + encodeURIComponent($url)).then(x => x.text()).then(console.log)
 ```
 
+### werss（微信公众号全文 RSS）
+
+将微信公众号 RSS 源（如 [osnsyc/Wechat-Scholar](https://github.com/osnsyc/Wechat-Scholar) 里的 channels/*.xml）转换为带全文的 RSS 订阅源。中转站会抓取每篇文章对应的 `mp.weixin.qq.com` 链接，把文章全文 HTML 注入到 `content:encoded`。
+
+- 订阅源模式：`https://example.com/werss?url={RSS_FEED_URL}` 返回带全文的 RSS 2.0 订阅源
+  - 例如 `https://example.com/werss?url=https://raw.githubusercontent.com/osnsyc/Wechat-Scholar/main/channels/gh_ec27b24114a0.xml`
+- 单篇模式：`https://example.com/werss?url={mp.weixin.qq.com 文章链接}` 返回文章正文 HTML
+
+可通过环境变量配置：`WERSS_MAX_ITEMS`（默认 `20`，上限 `50`）、`WERSS_CONCURRENCY`（默认 `5`）、`WERSS_CACHE`（默认 `900` 秒）、`WERSS_USER_AGENT`。
+
 ### 部署
 
 > 两种方法的工作原理一致

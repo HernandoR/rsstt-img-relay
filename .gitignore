@@ -13,6 +13,7 @@
 *.userprefs
 
 .wrangler/
+output/
 
 # Build results
 [Dd]ebug/
